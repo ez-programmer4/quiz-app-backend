@@ -5,7 +5,7 @@ const authenticate = (req, res, next) => {
   console.log("Authorization Header:", token); // Log the token
 
   if (!token || !token.startsWith("Bearer ")) {
-    return res.status(403).json({ message: "No token provided" });
+    return res.status(403).json({ message: "No token provvided" });
   }
 
   const jwtToken = token.split(" ")[1]; // Extract token
