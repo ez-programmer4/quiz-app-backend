@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000; // Use the PORT from the environment or d
 
 // CORS configuration
 const corsOptions = {
-  origin: "https://your-frontend-domain.com", // Replace with your frontend URL
+  origin: "https://quiz-app-k622.onrender.com", // Replace with your frontend URL
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
