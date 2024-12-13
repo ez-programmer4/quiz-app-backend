@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
+const argon2 = require("argon2"); // Replace bcrypt with argon2
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
@@ -15,7 +15,7 @@ const register = async (req, res) => {
     }
 
     // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await argon2.hash(password); // Use argon2 to hash
 
     // Create a new user with a default role
     const newUser = new User({
@@ -36,7 +36,8 @@ const login = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await argon2.verify(user.password, password))) {
+      // Use argon2 to verify
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       // Include the user's role in the response
       res.json({ token, userId: user._id, role: user.role });
@@ -48,5 +49,6 @@ const login = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 // Export both functions
 module.exports = { register, login };
