@@ -11,7 +11,7 @@ const register = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ message: "Email already in use by other." });
+        .json({ message: "Email already in use by others." });
     }
 
     // Hash the password before saving
