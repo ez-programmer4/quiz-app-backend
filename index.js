@@ -1,3 +1,5 @@
+// server.js (or app.js)
+
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -8,15 +10,26 @@ const connectDB = require("./config/db");
 const resultRoute = require("./routes/resultRoutes");
 const progressRoutes = require("./routes/progressRoutes");
 const userRoute = require("./routes/userRoutes");
-dotenv.config();
+
+dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Use the PORT from the environment or default to 5000
 
-app.use(cors());
-app.use(express.json());
+// CORS configuration
+const corsOptions = {
+  origin: "https://your-frontend-domain.com", // Replace with your frontend URL
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
 
+app.use(cors(corsOptions)); // Use the configured CORS options
+app.use(express.json()); // Parse incoming JSON requests
+
+// Database connection
 connectDB();
+
+// API Routes
 app.use("/api", userRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
@@ -24,7 +37,7 @@ app.use("/api/quizzes", quizRoutes); // Use quiz routes
 app.use("/api/result", resultRoute);
 app.use("/api/progress", progressRoutes);
 
-// Update the listen method for Render
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`); // Log the port instead of a specific URL
 });
