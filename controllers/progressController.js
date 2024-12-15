@@ -41,3 +41,30 @@ exports.deleteUserProgress = async (req, res) => {
     res.status(500).json({ message: "Error deleting progress." });
   }
 };
+
+// Example function to save user progress
+exports.saveUserProgress = async (req, res) => {
+  const { userId, quizId, score } = req.body;
+
+  // Validate input
+  if (!userId || !quizId || score === undefined) {
+    return res
+      .status(400)
+      .json({ message: "User ID, Quiz ID, and Score are required." });
+  }
+
+  const newProgress = new Result({
+    userId,
+    quizId, // Ensure this is populated
+    score,
+    date: new Date(),
+  });
+
+  try {
+    await newProgress.save();
+    res.status(201).json(newProgress);
+  } catch (error) {
+    console.error("Error saving progress:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
